@@ -1,0 +1,22 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: black;
+  align-items: center;
+}
+
+input {
+  padding: 8px;
+  margin-right: 8px;
+}
+
+button {
+  padding: 8px;
+  background-color: teal;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: teal;
+}

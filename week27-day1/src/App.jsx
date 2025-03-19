@@ -1,53 +1,82 @@
-import { useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 
-const getRandomColor = () => {
-  return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+const NavBar = () => {
+  const location = useLocation();
+  return (
+    <nav style={{ display: "flex", gap: "20px", padding: "10px", borderBottom: "1px solid #ccc" }}>
+      <Link to="/profile" style={{ fontWeight: location.pathname === "/profile" ? "bold" : "normal" }}>My Profile</Link>
+      <Link to="/projects" style={{ fontWeight: location.pathname === "/projects" ? "bold" : "normal" }}>My Projects</Link>
+      <Link to="/about" style={{ fontWeight: location.pathname === "/about" ? "bold" : "normal" }}>About Me</Link>
+    </nav>
+  );
 };
 
-const RandomColorBox = () => {
-  const [color, setColor] = useState(getRandomColor());
-
-  const changeColor = () => {
-    setColor(getRandomColor());
-  };
-
+const Profile = () => {
+  const navigate = useNavigate();
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <div
-        style={{
-          width: "200px",
-          height: "200px",
-          backgroundColor: color,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-          margin: "auto",
-          fontSize: "20px",
-          color: "#fff",
-          fontWeight: "bold",
-        }}
-      >
-        {color}
-      </div>
-      <button
-        onClick={changeColor}
-        style={{
-          marginTop: "10px",
-          padding: "10px 20px",
-          backgroundColor: "#333",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          fontSize: "16px",
-        }}
-      >
-        Түсті өзгерту
+    <div>
+      <h2>My Profile</h2>
+      <p>Name: Your Name</p>
+      <p>Email: your.email@example.com</p>
+      <p>Academy: Your Academy</p>
+      <button onClick={() => navigate("/projects")}>
+        Go to My Projects
       </button>
     </div>
   );
 };
 
-export default RandomColorBox;
+const Projects = () => {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <h2>My Projects</h2>
+      <ul>
+        <li><strong>Project 1:</strong> Description 1</li>
+        <li><strong>Project 2:</strong> Description 2</li>
+        <li><strong>Project 3:</strong> Description 3</li>
+      </ul>
+      <button onClick={() => navigate("/about")}>
+        Go to About Me
+      </button>
+    </div>
+  );
+};
+
+const AboutMe = () => {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <h2>About Me</h2>
+      <p>This is a short description about myself.</p>
+      <button onClick={() => navigate("/profile")}>
+        Go to My Profile
+      </button>
+    </div>
+  );
+};
+
+const NotFound = () => {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    navigate("/about", { replace: true });
+  }, [navigate]);
+  return null;
+};
+
+const App = () => {
+  return (
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/about" element={<AboutMe />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
